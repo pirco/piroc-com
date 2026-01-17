@@ -86,21 +86,20 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            mix-blend-mode: difference;
             opacity: 0;
             animation: fadeIn 1s ease-out 1.8s forwards;
+            transition: opacity 0.3s ease, transform 0.3s ease;
         }
 
-        .logo-text {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 50%, var(--gold-dark) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        header.header-hidden {
+            opacity: 0 !important;
+            transform: translateY(-20px);
+            pointer-events: none;
+        }
+
+        .logo img {
+            height: 40px;
+            width: auto;
         }
 
         header nav {
@@ -621,7 +620,7 @@
     <div class="grain"></div>
 
     <header>
-        <div class="logo-text">Piroc</div>
+        <a href="#" class="logo"><img src="pirocmedia_logo.png" alt="Piroc Media"></a>
         <nav>
             <a href="#about">About</a>
             <a href="#contact">Contact</a>
@@ -728,5 +727,33 @@
         </div>
         <p class="claude-credit">Built with <a href="https://claude.ai/code" target="_blank">Claude Code</a></p>
     </footer>
+
+    <script>
+        (function() {
+            const header = document.querySelector('header');
+            let lastScrollY = window.scrollY;
+            let ticking = false;
+
+            function updateHeader() {
+                const currentScrollY = window.scrollY;
+
+                if (currentScrollY > 100 && currentScrollY > lastScrollY) {
+                    header.classList.add('header-hidden');
+                } else {
+                    header.classList.remove('header-hidden');
+                }
+
+                lastScrollY = currentScrollY;
+                ticking = false;
+            }
+
+            window.addEventListener('scroll', function() {
+                if (!ticking) {
+                    requestAnimationFrame(updateHeader);
+                    ticking = true;
+                }
+            });
+        })();
+    </script>
 </body>
 </html>
