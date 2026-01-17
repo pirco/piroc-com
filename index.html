@@ -324,6 +324,15 @@
         .marquee {
             display: flex;
             animation: scroll 30s linear infinite;
+            cursor: grab;
+        }
+
+        .marquee:active {
+            cursor: grabbing;
+        }
+
+        .marquee.dragging {
+            animation-play-state: paused;
         }
 
         .marquee-content {
@@ -657,6 +666,10 @@
                 display: none;
             }
 
+            .marquee {
+                animation-duration: 15s;
+            }
+
             .marquee-content span {
                 font-size: 1rem;
             }
@@ -845,6 +858,47 @@
                     if (sparklesCreated >= sparkleCount) clearInterval(sparkleInterval);
                 }, 150);
             }, 2000);
+
+            // Draggable marquee
+            const marquee = document.querySelector('.marquee');
+            let isDragging = false;
+            let startX;
+            let currentTranslate = 0;
+
+            function getTranslateX() {
+                const style = window.getComputedStyle(marquee);
+                const matrix = new DOMMatrix(style.transform);
+                return matrix.m41;
+            }
+
+            function handleDragStart(e) {
+                isDragging = true;
+                startX = e.type.includes('mouse') ? e.pageX : e.touches[0].pageX;
+                currentTranslate = getTranslateX();
+                marquee.classList.add('dragging');
+            }
+
+            function handleDragMove(e) {
+                if (!isDragging) return;
+                e.preventDefault();
+                const x = e.type.includes('mouse') ? e.pageX : e.touches[0].pageX;
+                const diff = x - startX;
+                marquee.style.transform = `translateX(${currentTranslate + diff}px)`;
+            }
+
+            function handleDragEnd() {
+                if (!isDragging) return;
+                isDragging = false;
+                marquee.classList.remove('dragging');
+                marquee.style.transform = '';
+            }
+
+            marquee.addEventListener('mousedown', handleDragStart);
+            marquee.addEventListener('touchstart', handleDragStart, { passive: true });
+            window.addEventListener('mousemove', handleDragMove);
+            window.addEventListener('touchmove', handleDragMove, { passive: false });
+            window.addEventListener('mouseup', handleDragEnd);
+            window.addEventListener('touchend', handleDragEnd);
         })();
     </script>
 </body>
