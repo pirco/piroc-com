@@ -166,15 +166,75 @@
 
         .hero-year {
             font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(8rem, 15vw, 14rem);
+            font-size: clamp(4rem, 10vw, 7rem);
             font-weight: 700;
-            line-height: 0.85;
+            line-height: 1;
+            text-transform: lowercase;
+            font-style: italic;
             background: linear-gradient(180deg, var(--gold-light) 0%, var(--gold) 40%, var(--gold-dark) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             opacity: 0;
-            animation: slideUp 1s ease-out 2s forwards;
+            animation: bubbleUp 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 2s forwards;
+        }
+
+        @keyframes bubbleUp {
+            0% {
+                opacity: 0;
+                transform: scale(0.5) translateY(40px);
+            }
+            60% {
+                transform: scale(1.05) translateY(-5px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .typewriter {
+            font-weight: 700;
+            font-style: italic;
+            border-right: 2px solid var(--gold);
+            padding-right: 4px;
+            animation: blink 0.7s step-end infinite;
+        }
+
+        .typewriter.done {
+            border-right-color: transparent;
+            animation: none;
+        }
+
+        @keyframes blink {
+            50% { border-right-color: transparent; }
+        }
+
+        /* Sparkles */
+        .sparkle-container {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--gold-light);
+            border-radius: 50%;
+            opacity: 0;
+            animation: sparkle 1.5s ease-in-out forwards;
+            box-shadow: 0 0 6px var(--gold), 0 0 10px var(--gold-light);
+        }
+
+        @keyframes sparkle {
+            0% { opacity: 0; transform: scale(0) rotate(0deg); }
+            20% { opacity: 1; transform: scale(1) rotate(90deg); }
+            80% { opacity: 1; transform: scale(0.8) rotate(270deg); }
+            100% { opacity: 0; transform: scale(0) rotate(360deg); }
         }
 
         .hero h1 {
@@ -202,18 +262,6 @@
             animation: slideUp 1s ease-out 2.4s forwards;
         }
 
-        .hero-tagline .ai-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-top: 1.5rem;
-            padding: 0.6rem 1.2rem;
-            border: 1px solid var(--gold);
-            font-size: 0.75rem;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            color: var(--gold);
-        }
 
         .hero-image {
             display: flex;
@@ -628,12 +676,12 @@
     </header>
 
     <section class="hero">
+        <div class="sparkle-container" id="sparkles"></div>
         <div class="hero-content">
-            <div class="hero-year">1997</div>
-            <h1>Building the web<br>since the <strong>beginning</strong>.</h1>
+            <div class="hero-year">since 1997</div>
+            <h1>Building the web<br><span class="typewriter" id="typewriter"></span></h1>
             <p class="hero-tagline">
                 Award-winning design and development. Three decades of digital craft from Los Angeles to Berlin.
-                <span class="ai-badge">Now powered by Claude Code</span>
             </p>
         </div>
         <div class="hero-image">
@@ -730,19 +778,18 @@
 
     <script>
         (function() {
+            // Header scroll behavior
             const header = document.querySelector('header');
             let lastScrollY = window.scrollY;
             let ticking = false;
 
             function updateHeader() {
                 const currentScrollY = window.scrollY;
-
                 if (currentScrollY > 100 && currentScrollY > lastScrollY) {
                     header.classList.add('header-hidden');
                 } else {
                     header.classList.remove('header-hidden');
                 }
-
                 lastScrollY = currentScrollY;
                 ticking = false;
             }
@@ -753,6 +800,51 @@
                     ticking = true;
                 }
             });
+
+            // Typewriter effect
+            const typewriterEl = document.getElementById('typewriter');
+            const text = 'from the beginning.';
+            let i = 0;
+
+            function typeWriter() {
+                if (i < text.length) {
+                    typewriterEl.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 80);
+                } else {
+                    typewriterEl.classList.add('done');
+                }
+            }
+
+            setTimeout(typeWriter, 2400);
+
+            // Sparkle effect
+            const sparkleContainer = document.getElementById('sparkles');
+            const sparkleCount = 25;
+            let sparklesCreated = 0;
+
+            function createSparkle() {
+                if (sparklesCreated >= sparkleCount) return;
+
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.style.left = Math.random() * 100 + '%';
+                sparkle.style.top = Math.random() * 100 + '%';
+                sparkle.style.animationDelay = Math.random() * 0.5 + 's';
+                sparkle.style.animationDuration = (1 + Math.random() * 1) + 's';
+                sparkleContainer.appendChild(sparkle);
+                sparklesCreated++;
+
+                sparkle.addEventListener('animationend', () => sparkle.remove());
+            }
+
+            setTimeout(() => {
+                const sparkleInterval = setInterval(() => {
+                    createSparkle();
+                    createSparkle();
+                    if (sparklesCreated >= sparkleCount) clearInterval(sparkleInterval);
+                }, 150);
+            }, 2000);
         })();
     </script>
 </body>
