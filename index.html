@@ -6,7 +6,7 @@
     <title>Piroc Media | Building the web since 1997</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -15,11 +15,12 @@
         }
 
         :root {
-            --orange: #f69837;
-            --charcoal: #1a1a1a;
-            --gray: #6b7280;
-            --light-gray: #f3f4f6;
+            --black: #0a0a0a;
+            --gold: #D4AF37;
+            --gold-light: #F4D03F;
+            --gold-dark: #B8860B;
             --white: #ffffff;
+            --gray: #888888;
         }
 
         html {
@@ -27,10 +28,48 @@
         }
 
         body {
-            font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
-            color: var(--charcoal);
+            font-family: 'Outfit', sans-serif;
+            color: var(--white);
             line-height: 1.6;
+            background: var(--black);
+            overflow-x: hidden;
+        }
+
+        /* Flash Intro Overlay */
+        .flash-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
             background: var(--white);
+            z-index: 9999;
+            pointer-events: none;
+            animation: flashSequence 1.8s ease-out forwards;
+        }
+
+        @keyframes flashSequence {
+            0% { background: var(--white); opacity: 1; }
+            15% { background: var(--white); opacity: 1; }
+            20% { background: var(--black); opacity: 1; }
+            25% { background: var(--white); opacity: 1; }
+            35% { background: var(--black); opacity: 1; }
+            40% { background: var(--gold); opacity: 0.3; }
+            50% { background: var(--black); opacity: 1; }
+            100% { background: var(--black); opacity: 0; pointer-events: none; }
+        }
+
+        /* Grain texture overlay */
+        .grain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noise)'/%3E%3C/svg%3E");
         }
 
         /* Header */
@@ -39,370 +78,462 @@
             top: 0;
             left: 0;
             right: 0;
-            padding: 1.5rem 3rem;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
+            padding: 2rem 4rem;
             z-index: 100;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            mix-blend-mode: difference;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 1.8s forwards;
         }
 
-        .logo {
-            height: 40px;
-            transition: transform 0.3s ease;
+        .logo-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 50%, var(--gold-dark) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        .logo:hover {
-            transform: scale(1.05);
+        header nav {
+            display: flex;
+            gap: 3rem;
         }
 
         header nav a {
-            color: var(--charcoal);
+            color: var(--white);
             text-decoration: none;
-            font-weight: 500;
-            margin-left: 2rem;
+            font-weight: 400;
+            font-size: 0.85rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
             position: relative;
             transition: color 0.3s ease;
         }
 
-        header nav a::after {
+        header nav a::before {
             content: '';
             position: absolute;
-            bottom: -4px;
+            bottom: -8px;
             left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--orange);
-            transition: width 0.3s ease;
-        }
-
-        header nav a:hover {
-            color: var(--orange);
-        }
-
-        header nav a:hover::after {
             width: 100%;
+            height: 1px;
+            background: var(--gold);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        header nav a:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
         }
 
         /* Hero Section */
         .hero {
             min-height: 100vh;
-            display: flex;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             align-items: center;
-            padding: 8rem 3rem 4rem;
-            max-width: 1400px;
-            margin: 0 auto;
-            gap: 4rem;
+            padding: 0 4rem;
+            position: relative;
+            opacity: 0;
+            animation: fadeIn 1.2s ease-out 1.6s forwards;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.08) 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+            pointer-events: none;
         }
 
         .hero-content {
-            flex: 1;
+            padding-right: 4rem;
+        }
+
+        .hero-year {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(8rem, 15vw, 14rem);
+            font-weight: 700;
+            line-height: 0.85;
+            background: linear-gradient(180deg, var(--gold-light) 0%, var(--gold) 40%, var(--gold-dark) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            opacity: 0;
+            animation: slideUp 1s ease-out 2s forwards;
         }
 
         .hero h1 {
-            font-size: clamp(2.5rem, 6vw, 4.5rem);
-            font-weight: 700;
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
-            letter-spacing: -0.02em;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 400;
+            line-height: 1.2;
+            margin: 1.5rem 0 2rem;
+            letter-spacing: 0.02em;
+            opacity: 0;
+            animation: slideUp 1s ease-out 2.2s forwards;
         }
 
-        .hero h1 span {
-            color: var(--orange);
+        .hero h1 strong {
+            font-weight: 700;
+            font-style: italic;
         }
 
         .hero-tagline {
-            font-size: 1.25rem;
+            font-size: 1rem;
             color: var(--gray);
-            margin-bottom: 2rem;
-            max-width: 500px;
+            max-width: 400px;
+            line-height: 1.8;
+            opacity: 0;
+            animation: slideUp 1s ease-out 2.4s forwards;
         }
 
-        .hero-tagline .ai-note {
-            display: inline-block;
-            margin-top: 0.5rem;
-            padding: 0.25rem 0.75rem;
-            background: var(--light-gray);
-            border-radius: 2rem;
-            font-size: 0.9rem;
-            color: var(--charcoal);
+        .hero-tagline .ai-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+            padding: 0.6rem 1.2rem;
+            border: 1px solid var(--gold);
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--gold);
         }
 
         .hero-image {
-            flex: 1;
             display: flex;
             justify-content: center;
             align-items: center;
-        }
-
-        .photo-container {
             position: relative;
-            max-width: 400px;
+            opacity: 0;
+            animation: fadeIn 1.5s ease-out 2.3s forwards;
         }
 
-        .photo-container::before {
+        .photo-frame {
+            position: relative;
+            max-width: 380px;
+        }
+
+        .photo-frame::before {
             content: '';
             position: absolute;
-            top: -20px;
-            left: -20px;
-            right: 20px;
-            bottom: 20px;
-            border: 3px solid var(--orange);
+            inset: -2px;
+            background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark), var(--gold));
             z-index: -1;
-            transition: transform 0.4s ease;
+            opacity: 0.8;
         }
 
-        .photo-container:hover::before {
-            transform: translate(10px, 10px);
-        }
-
-        .photo-container img {
-            width: 100%;
-            display: block;
-            filter: grayscale(20%);
-            transition: filter 0.4s ease;
-        }
-
-        .photo-container:hover img {
-            filter: grayscale(0%);
-        }
-
-        .photo-year {
+        .photo-frame::after {
+            content: '1997';
             position: absolute;
-            bottom: -15px;
-            right: -15px;
-            background: var(--charcoal);
-            color: var(--white);
-            padding: 0.5rem 1rem;
+            bottom: -3rem;
+            right: 0;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 5rem;
             font-weight: 700;
-            font-size: 0.9rem;
+            color: transparent;
+            -webkit-text-stroke: 1px var(--gold);
+            opacity: 0.4;
+        }
+
+        .photo-frame img {
+            display: block;
+            width: 100%;
+            filter: sepia(20%) contrast(1.1);
+            transition: filter 0.5s ease;
+        }
+
+        .photo-frame:hover img {
+            filter: sepia(0%) contrast(1);
+        }
+
+        /* Marquee */
+        .marquee-container {
+            padding: 3rem 0;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            overflow: hidden;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 2.6s forwards;
+        }
+
+        .marquee {
+            display: flex;
+            animation: scroll 30s linear infinite;
+        }
+
+        .marquee-content {
+            display: flex;
+            align-items: center;
+            gap: 4rem;
+            padding-right: 4rem;
+            white-space: nowrap;
+        }
+
+        .marquee-content span {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            color: var(--gray);
+            transition: color 0.3s ease;
+        }
+
+        .marquee-content span:hover {
+            color: var(--gold);
+        }
+
+        .marquee-content .separator {
+            width: 6px;
+            height: 6px;
+            background: var(--gold);
+            transform: rotate(45deg);
+        }
+
+        @keyframes scroll {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
         }
 
         /* About Section */
         .about {
-            padding: 6rem 3rem;
-            background: var(--light-gray);
+            padding: 10rem 4rem;
+            position: relative;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 2.8s forwards;
+        }
+
+        .about::before {
+            content: 'SINCE';
+            position: absolute;
+            top: 8rem;
+            right: 4rem;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 10rem;
+            font-weight: 700;
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(212, 175, 55, 0.1);
+            pointer-events: none;
         }
 
         .about-content {
-            max-width: 900px;
-            margin: 0 auto;
+            max-width: 800px;
         }
 
         .about h2 {
-            font-size: 2rem;
-            margin-bottom: 2rem;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 400;
+            margin-bottom: 3rem;
             position: relative;
             display: inline-block;
         }
 
-        .about h2::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 0;
-            width: 60px;
-            height: 4px;
-            background: var(--orange);
+        .about h2 strong {
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .about p {
-            font-size: 1.125rem;
+            font-size: 1.1rem;
             color: var(--gray);
-            margin-bottom: 1.5rem;
-            line-height: 1.8;
+            margin-bottom: 2rem;
+            line-height: 2;
+            font-weight: 300;
         }
 
-        .clients {
-            margin-top: 3rem;
-            padding-top: 2rem;
-            border-top: 1px solid #e5e7eb;
-        }
-
-        .clients-label {
-            font-size: 0.875rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--gray);
-            margin-bottom: 1rem;
-        }
-
-        .clients-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .clients-list span {
-            background: var(--white);
-            padding: 0.5rem 1rem;
-            font-size: 0.9rem;
-            font-weight: 500;
-            border-radius: 4px;
-            transition: all 0.3s ease;
-        }
-
-        .clients-list span:hover {
-            background: var(--orange);
-            color: var(--white);
+        .about p:first-of-type::first-letter {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 4rem;
+            float: left;
+            line-height: 1;
+            margin-right: 1rem;
+            margin-top: 0.5rem;
+            color: var(--gold);
+            font-weight: 700;
         }
 
         /* Contact Section */
         .contact {
-            padding: 6rem 3rem;
-            max-width: 700px;
-            margin: 0 auto;
-            text-align: center;
+            padding: 8rem 4rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            align-items: start;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
         }
 
-        .contact h2 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
+        .contact-info h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 400;
+            margin-bottom: 2rem;
+            line-height: 1.2;
         }
 
-        .contact p {
+        .contact-info h2 em {
+            font-style: italic;
+            background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .contact-info p {
             color: var(--gray);
-            margin-bottom: 3rem;
+            font-size: 1rem;
+            line-height: 1.8;
         }
 
         .contact-form {
             display: flex;
             flex-direction: column;
-            gap: 1.25rem;
-            text-align: left;
-        }
-
-        .form-row {
-            display: flex;
-            gap: 1.25rem;
+            gap: 1.5rem;
         }
 
         .form-group {
-            flex: 1;
+            position: relative;
         }
 
         .form-group label {
             display: block;
-            font-weight: 500;
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 0.75rem;
         }
 
         .form-group input,
         .form-group textarea {
             width: 100%;
-            padding: 1rem;
-            border: 2px solid var(--light-gray);
+            padding: 1rem 0;
+            border: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
             font-family: inherit;
             font-size: 1rem;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-            background: var(--white);
+            background: transparent;
+            color: var(--white);
+            transition: border-color 0.3s ease;
         }
 
         .form-group input:focus,
         .form-group textarea:focus {
             outline: none;
-            border-color: var(--orange);
-            box-shadow: 0 0 0 4px rgba(246, 152, 55, 0.1);
+            border-color: var(--gold);
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255, 255, 255, 0.3);
         }
 
         .form-group textarea {
-            resize: vertical;
-            min-height: 150px;
+            resize: none;
+            min-height: 120px;
         }
 
         .submit-btn {
-            background: var(--charcoal);
-            color: var(--white);
-            border: none;
-            padding: 1rem 2.5rem;
-            font-family: inherit;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
             align-self: flex-start;
+            padding: 1.2rem 3rem;
+            background: transparent;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            font-family: inherit;
+            font-size: 0.8rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 100%);
+            transform: translateX(-100%);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: -1;
         }
 
         .submit-btn:hover {
-            background: var(--orange);
-            transform: translateY(-2px);
+            color: var(--black);
+        }
+
+        .submit-btn:hover::before {
+            transform: translateX(0);
         }
 
         /* Footer */
         footer {
-            padding: 2rem 3rem;
-            background: var(--charcoal);
-            color: var(--white);
+            padding: 3rem 4rem;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
         }
 
         footer p {
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        footer .locations {
+            display: flex;
+            gap: 2rem;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--gray);
         }
 
         footer .claude-credit {
-            font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.4);
         }
 
         footer .claude-credit a {
-            color: var(--orange);
+            color: var(--gold);
             text-decoration: none;
+            transition: opacity 0.3s ease;
         }
 
-        /* Responsive */
-        @media (max-width: 900px) {
-            .hero {
-                flex-direction: column-reverse;
-                text-align: center;
-                padding-top: 10rem;
-            }
-
-            .hero-tagline {
-                margin-left: auto;
-                margin-right: auto;
-            }
-
-            .photo-container {
-                max-width: 300px;
-            }
-
-            .form-row {
-                flex-direction: column;
-            }
-
-            header {
-                padding: 1rem 1.5rem;
-            }
-
-            header nav a {
-                margin-left: 1rem;
-                font-size: 0.9rem;
-            }
-
-            .hero, .about, .contact {
-                padding-left: 1.5rem;
-                padding-right: 1.5rem;
-            }
-
-            footer {
-                flex-direction: column;
-                text-align: center;
-            }
+        footer .claude-credit a:hover {
+            opacity: 0.7;
         }
 
         /* Animations */
-        @keyframes fadeInUp {
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
             from {
                 opacity: 0;
-                transform: translateY(30px);
+                transform: translateY(40px);
             }
             to {
                 opacity: 1;
@@ -410,18 +541,83 @@
             }
         }
 
-        .hero-content {
-            animation: fadeInUp 0.8s ease-out;
+        /* Responsive */
+        @media (max-width: 1024px) {
+            header {
+                padding: 1.5rem 2rem;
+            }
+
+            .hero {
+                grid-template-columns: 1fr;
+                padding: 8rem 2rem 4rem;
+                text-align: center;
+                gap: 4rem;
+            }
+
+            .hero-content {
+                padding-right: 0;
+                order: 2;
+            }
+
+            .hero-tagline {
+                margin: 0 auto;
+            }
+
+            .hero-image {
+                order: 1;
+            }
+
+            .photo-frame {
+                max-width: 280px;
+            }
+
+            .about, .contact {
+                padding: 6rem 2rem;
+            }
+
+            .contact {
+                grid-template-columns: 1fr;
+                gap: 4rem;
+            }
+
+            footer {
+                flex-direction: column;
+                gap: 1.5rem;
+                text-align: center;
+                padding: 2rem;
+            }
+
+            footer .locations {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
         }
 
-        .hero-image {
-            animation: fadeInUp 0.8s ease-out 0.2s both;
+        @media (max-width: 600px) {
+            header nav {
+                gap: 1.5rem;
+            }
+
+            .hero-year {
+                font-size: 6rem;
+            }
+
+            .about::before {
+                display: none;
+            }
+
+            .marquee-content span {
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="flash-overlay"></div>
+    <div class="grain"></div>
+
     <header>
-        <img src="pirocmedia_logo.png" alt="Piroc Media" class="logo">
+        <div class="logo-text">Piroc</div>
         <nav>
             <a href="#about">About</a>
             <a href="#contact">Contact</a>
@@ -430,70 +626,103 @@
 
     <section class="hero">
         <div class="hero-content">
-            <h1>Building the web<br>since <span>1997</span>.</h1>
+            <div class="hero-year">1997</div>
+            <h1>Building the web<br>since the <strong>beginning</strong>.</h1>
             <p class="hero-tagline">
-                Award-winning web design and development from Los Angeles to Berlin.
-                <span class="ai-note">Now coding with Claude Code</span>
+                Award-winning design and development. Three decades of digital craft from Los Angeles to Berlin.
+                <span class="ai-badge">Now powered by Claude Code</span>
             </p>
         </div>
         <div class="hero-image">
-            <div class="photo-container">
+            <div class="photo-frame">
                 <img src="peace_pirco_1997.gif" alt="Pirco in 1997">
-                <span class="photo-year">1997</span>
             </div>
         </div>
     </section>
 
+    <div class="marquee-container">
+        <div class="marquee">
+            <div class="marquee-content">
+                <span>The Walt Disney Company</span>
+                <div class="separator"></div>
+                <span>UCLA</span>
+                <div class="separator"></div>
+                <span>USC</span>
+                <div class="separator"></div>
+                <span>Amgen Biotech</span>
+                <div class="separator"></div>
+                <span>McKesson</span>
+                <div class="separator"></div>
+                <span>NBC Television</span>
+                <div class="separator"></div>
+                <span>Wynn Hotels</span>
+                <div class="separator"></div>
+                <span>City of Beverly Hills</span>
+                <div class="separator"></div>
+            </div>
+            <div class="marquee-content">
+                <span>The Walt Disney Company</span>
+                <div class="separator"></div>
+                <span>UCLA</span>
+                <div class="separator"></div>
+                <span>USC</span>
+                <div class="separator"></div>
+                <span>Amgen Biotech</span>
+                <div class="separator"></div>
+                <span>McKesson</span>
+                <div class="separator"></div>
+                <span>NBC Television</span>
+                <div class="separator"></div>
+                <span>Wynn Hotels</span>
+                <div class="separator"></div>
+                <span>City of Beverly Hills</span>
+                <div class="separator"></div>
+            </div>
+        </div>
+    </div>
+
     <section class="about" id="about">
         <div class="about-content">
-            <h2>We build websites.</h2>
+            <h2>We <strong>build</strong> websites.</h2>
             <p>
                 Piroc Media was founded in Los Angeles in 1997 by a typographer who taught himself HTML and never looked back. From the wild west days of table layouts and blinking text through the dot-com boom and bust, we've been crafting digital experiences for nearly three decades. What started as a one-person operation has grown into an award-winning studio with presence in New York City and Berlin.
             </p>
             <p>
                 Over the years, we've designed UCLA.edu, created eight consecutive annual financial reports for The Walt Disney Company, won a Webby Award for best scientific website, and built digital solutions for organizations ranging from biotech giants to boutique hotels. Today, we specialize in custom WordPress and Shopify development, responsive design, and the kind of reliability that only comes from doing this longer than most of the internet has existed.
             </p>
-            <div class="clients">
-                <p class="clients-label">Clients we've worked with</p>
-                <div class="clients-list">
-                    <span>The Walt Disney Company</span>
-                    <span>UCLA</span>
-                    <span>USC</span>
-                    <span>Amgen Biotech</span>
-                    <span>McKesson</span>
-                    <span>NBC Television</span>
-                    <span>Wynn Hotels</span>
-                    <span>City of Beverly Hills</span>
-                </div>
-            </div>
         </div>
     </section>
 
     <section class="contact" id="contact">
-        <h2>Let's talk.</h2>
-        <p>Have a project in mind? Drop us a line.</p>
+        <div class="contact-info">
+            <h2>Let's build<br>something <em>great</em>.</h2>
+            <p>Have a project in mind? We'd love to hear about it.</p>
+        </div>
         <form class="contact-form" action="#" method="POST">
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" id="name" name="name" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" placeholder="Your name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="your@email.com" required>
             </div>
             <div class="form-group">
                 <label for="message">Message</label>
-                <textarea id="message" name="message" required></textarea>
+                <textarea id="message" name="message" placeholder="Tell us about your project..." required></textarea>
             </div>
             <button type="submit" class="submit-btn">Send Message</button>
         </form>
     </section>
 
     <footer>
-        <p>&copy; 1997&ndash;2025 Piroc Media. Los Angeles / New York / Berlin</p>
-        <p class="claude-credit">Built with <a href="https://claude.ai/claude-code" target="_blank">Claude Code</a></p>
+        <p>&copy; 1997&ndash;2025 Piroc Media</p>
+        <div class="locations">
+            <span>Los Angeles</span>
+            <span>New York</span>
+            <span>Berlin</span>
+        </div>
+        <p class="claude-credit">Built with <a href="https://claude.ai/code" target="_blank">Claude Code</a></p>
     </footer>
 </body>
 </html>
