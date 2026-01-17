@@ -3,9 +3,497 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello UAI</title>
+    <title>Piroc Media | Building the web since 1997</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --orange: #f69837;
+            --charcoal: #1a1a1a;
+            --gray: #6b7280;
+            --light-gray: #f3f4f6;
+            --white: #ffffff;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--charcoal);
+            line-height: 1.6;
+            background: var(--white);
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 1.5rem 3rem;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            height: 40px;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        header nav a {
+            color: var(--charcoal);
+            text-decoration: none;
+            font-weight: 500;
+            margin-left: 2rem;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        header nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--orange);
+            transition: width 0.3s ease;
+        }
+
+        header nav a:hover {
+            color: var(--orange);
+        }
+
+        header nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 8rem 3rem 4rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            gap: 4rem;
+        }
+
+        .hero-content {
+            flex: 1;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .hero h1 span {
+            color: var(--orange);
+        }
+
+        .hero-tagline {
+            font-size: 1.25rem;
+            color: var(--gray);
+            margin-bottom: 2rem;
+            max-width: 500px;
+        }
+
+        .hero-tagline .ai-note {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            background: var(--light-gray);
+            border-radius: 2rem;
+            font-size: 0.9rem;
+            color: var(--charcoal);
+        }
+
+        .hero-image {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .photo-container {
+            position: relative;
+            max-width: 400px;
+        }
+
+        .photo-container::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            right: 20px;
+            bottom: 20px;
+            border: 3px solid var(--orange);
+            z-index: -1;
+            transition: transform 0.4s ease;
+        }
+
+        .photo-container:hover::before {
+            transform: translate(10px, 10px);
+        }
+
+        .photo-container img {
+            width: 100%;
+            display: block;
+            filter: grayscale(20%);
+            transition: filter 0.4s ease;
+        }
+
+        .photo-container:hover img {
+            filter: grayscale(0%);
+        }
+
+        .photo-year {
+            position: absolute;
+            bottom: -15px;
+            right: -15px;
+            background: var(--charcoal);
+            color: var(--white);
+            padding: 0.5rem 1rem;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        /* About Section */
+        .about {
+            padding: 6rem 3rem;
+            background: var(--light-gray);
+        }
+
+        .about-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .about h2 {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .about h2::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--orange);
+        }
+
+        .about p {
+            font-size: 1.125rem;
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .clients {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .clients-label {
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--gray);
+            margin-bottom: 1rem;
+        }
+
+        .clients-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .clients-list span {
+            background: var(--white);
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .clients-list span:hover {
+            background: var(--orange);
+            color: var(--white);
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 6rem 3rem;
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .contact h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .contact p {
+            color: var(--gray);
+            margin-bottom: 3rem;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            text-align: left;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1.25rem;
+        }
+
+        .form-group {
+            flex: 1;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--light-gray);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            background: var(--white);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--orange);
+            box-shadow: 0 0 0 4px rgba(246, 152, 55, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .submit-btn {
+            background: var(--charcoal);
+            color: var(--white);
+            border: none;
+            padding: 1rem 2.5rem;
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            align-self: flex-start;
+        }
+
+        .submit-btn:hover {
+            background: var(--orange);
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        footer {
+            padding: 2rem 3rem;
+            background: var(--charcoal);
+            color: var(--white);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        footer p {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        footer .claude-credit {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        footer .claude-credit a {
+            color: var(--orange);
+            text-decoration: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .hero {
+                flex-direction: column-reverse;
+                text-align: center;
+                padding-top: 10rem;
+            }
+
+            .hero-tagline {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .photo-container {
+                max-width: 300px;
+            }
+
+            .form-row {
+                flex-direction: column;
+            }
+
+            header {
+                padding: 1rem 1.5rem;
+            }
+
+            header nav a {
+                margin-left: 1rem;
+                font-size: 0.9rem;
+            }
+
+            .hero, .about, .contact {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+            }
+
+            footer {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-content {
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .hero-image {
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+    </style>
 </head>
 <body>
-    Hello UAI
+    <header>
+        <img src="pirocmedia_logo.png" alt="Piroc Media" class="logo">
+        <nav>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Building the web<br>since <span>1997</span>.</h1>
+            <p class="hero-tagline">
+                Award-winning web design and development from Los Angeles to Berlin.
+                <span class="ai-note">Now coding with Claude Code</span>
+            </p>
+        </div>
+        <div class="hero-image">
+            <div class="photo-container">
+                <img src="peace_pirco_1997.gif" alt="Pirco in 1997">
+                <span class="photo-year">1997</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="about" id="about">
+        <div class="about-content">
+            <h2>We build websites.</h2>
+            <p>
+                Piroc Media was founded in Los Angeles in 1997 by a typographer who taught himself HTML and never looked back. From the wild west days of table layouts and blinking text through the dot-com boom and bust, we've been crafting digital experiences for nearly three decades. What started as a one-person operation has grown into an award-winning studio with presence in New York City and Berlin.
+            </p>
+            <p>
+                Over the years, we've designed UCLA.edu, created eight consecutive annual financial reports for The Walt Disney Company, won a Webby Award for best scientific website, and built digital solutions for organizations ranging from biotech giants to boutique hotels. Today, we specialize in custom WordPress and Shopify development, responsive design, and the kind of reliability that only comes from doing this longer than most of the internet has existed.
+            </p>
+            <div class="clients">
+                <p class="clients-label">Clients we've worked with</p>
+                <div class="clients-list">
+                    <span>The Walt Disney Company</span>
+                    <span>UCLA</span>
+                    <span>USC</span>
+                    <span>Amgen Biotech</span>
+                    <span>McKesson</span>
+                    <span>NBC Television</span>
+                    <span>Wynn Hotels</span>
+                    <span>City of Beverly Hills</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact" id="contact">
+        <h2>Let's talk.</h2>
+        <p>Have a project in mind? Drop us a line.</p>
+        <form class="contact-form" action="#" method="POST">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" required></textarea>
+            </div>
+            <button type="submit" class="submit-btn">Send Message</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>&copy; 1997&ndash;2025 Piroc Media. Los Angeles / New York / Berlin</p>
+        <p class="claude-credit">Built with <a href="https://claude.ai/claude-code" target="_blank">Claude Code</a></p>
+    </footer>
 </body>
 </html>
