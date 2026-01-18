@@ -235,11 +235,11 @@
             const formData = {
                 name: this.querySelector('#name').value,
                 email: this.querySelector('#email').value,
-                role: this.querySelector('#role').value
+                message: this.querySelector('#role').value
             };
 
             try {
-                const response = await fetch('/api/register', {
+                const response = await fetch('/api/contact', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(formData)
