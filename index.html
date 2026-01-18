@@ -325,6 +325,7 @@
             display: flex;
             animation: scroll 30s linear infinite;
             cursor: grab;
+            touch-action: none;
         }
 
         .marquee:active {
@@ -897,7 +898,7 @@
             }
 
             marquee.addEventListener('mousedown', handleDragStart);
-            marquee.addEventListener('touchstart', handleDragStart, { passive: true });
+            marquee.addEventListener('touchstart', handleDragStart, { passive: false });
             window.addEventListener('mousemove', handleDragMove);
             window.addEventListener('touchmove', handleDragMove, { passive: false });
             window.addEventListener('mouseup', handleDragEnd);
