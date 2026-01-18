@@ -326,6 +326,8 @@
             animation: scroll 30s linear infinite;
             cursor: grab;
             touch-action: none;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
         .marquee:active {
@@ -876,6 +878,7 @@
             }
 
             function handleDragStart(e) {
+                if (e.type === 'touchstart') e.preventDefault();
                 isDragging = true;
                 startX = e.type.includes('mouse') ? e.pageX : e.touches[0].pageX;
                 currentTranslate = getTranslateX();
