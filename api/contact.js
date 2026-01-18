@@ -100,8 +100,9 @@ module.exports = async function handler(req, res) {
     return res.status(400).json({ error: 'Please enter a valid email address' });
   }
 
-  // Check for URLs in all fields (spam prevention)
-  if (containsUrl(name) || containsUrl(email) || containsUrl(message)) {
+  // Check for URLs in name and message fields (spam prevention)
+  // Note: email field excluded since email addresses contain domains
+  if (containsUrl(name) || containsUrl(message)) {
     return res.status(400).json({ error: 'URLs are not allowed in the form' });
   }
 
