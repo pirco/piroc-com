@@ -592,6 +592,21 @@ ul {
     font-family: var(--font-mono);
 }
 
+.form-note.recaptcha-notice {
+    margin-top: var(--spacing-xs);
+    font-size: 0.65rem;
+    opacity: 0.7;
+}
+
+.form-note.recaptcha-notice a {
+    color: var(--color-primary);
+    text-decoration: none;
+}
+
+.form-note.recaptcha-notice a:hover {
+    text-decoration: underline;
+}
+
 /* ===================================
    Footer
    =================================== */

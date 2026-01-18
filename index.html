@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <script src="https://www.google.com/recaptcha/api.js?render=6Ld1EwcpAAAAAEyOuQGMi2HTNazPrTuPf7GFO57I"></script>
 </head>
 <body>
     <!-- Hero Section -->
@@ -158,6 +159,7 @@
                     </div>
                     <button type="submit" class="btn btn-primary btn-full">Send Message</button>
                     <p class="form-note">We'll get back to you within 24 hours.</p>
+                    <p class="form-note recaptcha-notice">This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Privacy Policy</a> and <a href="https://policies.google.com/terms" target="_blank" rel="noopener">Terms of Service</a> apply.</p>
                 </form>
             </div>
         </div>
@@ -223,22 +225,64 @@
             });
         });
 
+        // Validation functions
+        function containsUrl(text) {
+            if (!text) return false;
+            const urlPattern = /(?:https?:\/\/|www\.|[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(?:\/|$))/i;
+            return urlPattern.test(text);
+        }
+
+        function isValidEmail(email) {
+            const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
+            return emailRegex.test(email) && email.length <= 254;
+        }
+
+        function isValidName(name) {
+            if (!name || name.trim().length < 2) return false;
+            if (name.length > 100) return false;
+            const nameRegex = /^[a-zA-ZÀ-ÿ\s\-'.]+$/;
+            return nameRegex.test(name.trim());
+        }
+
         // Form submission handler
         document.querySelector('.register-form').addEventListener('submit', async function(e) {
             e.preventDefault();
 
+            const name = this.querySelector('#name').value.trim();
+            const email = this.querySelector('#email').value.trim();
+            const message = this.querySelector('#role').value.trim();
+
+            // Client-side validation
+            if (!isValidName(name)) {
+                alert('Please enter a valid name (letters only, at least 2 characters)');
+                this.querySelector('#name').focus();
+                return;
+            }
+
+            if (!isValidEmail(email)) {
+                alert('Please enter a valid email address');
+                this.querySelector('#email').focus();
+                return;
+            }
+
+            if (containsUrl(name) || containsUrl(email) || containsUrl(message)) {
+                alert('URLs are not allowed in the form');
+                return;
+            }
+
             const submitBtn = this.querySelector('button[type="submit"]');
             const originalText = submitBtn.textContent;
-            submitBtn.textContent = 'Sending...';
+            submitBtn.textContent = 'Verifying...';
             submitBtn.disabled = true;
 
-            const formData = {
-                name: this.querySelector('#name').value,
-                email: this.querySelector('#email').value,
-                message: this.querySelector('#role').value
-            };
-
             try {
+                // Generate reCAPTCHA token
+                const recaptchaToken = await grecaptcha.execute('6Ld1EwcpAAAAAEyOuQGMi2HTNazPrTuPf7GFO57I', { action: 'contact_form' });
+
+                submitBtn.textContent = 'Sending...';
+
+                const formData = { name, email, message, recaptchaToken };
+
                 const response = await fetch('/api/contact', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -254,6 +298,7 @@
                     alert(result.error || 'Something went wrong. Please try again.');
                 }
             } catch (error) {
+                console.error('Form submission error:', error);
                 alert('Network error. Please check your connection and try again.');
             } finally {
                 submitBtn.textContent = originalText;
