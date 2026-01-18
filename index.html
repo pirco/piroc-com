@@ -865,7 +865,7 @@
                 }, 150);
             }, 2000);
 
-            // Draggable marquee
+            // Draggable marquee using Pointer Events API
             const marquee = document.querySelector('.marquee');
             let isDragging = false;
             let startX;
@@ -877,35 +877,34 @@
                 return matrix.m41;
             }
 
-            function handleDragStart(e) {
-                if (e.type === 'touchstart') e.preventDefault();
+            marquee.addEventListener('pointerdown', (e) => {
                 isDragging = true;
-                startX = e.type.includes('mouse') ? e.pageX : e.touches[0].pageX;
+                startX = e.clientX;
                 currentTranslate = getTranslateX();
                 marquee.classList.add('dragging');
-            }
+                marquee.setPointerCapture(e.pointerId);
+            });
 
-            function handleDragMove(e) {
+            marquee.addEventListener('pointermove', (e) => {
                 if (!isDragging) return;
-                e.preventDefault();
-                const x = e.type.includes('mouse') ? e.pageX : e.touches[0].pageX;
-                const diff = x - startX;
+                const diff = e.clientX - startX;
                 marquee.style.transform = `translateX(${currentTranslate + diff}px)`;
-            }
+            });
 
-            function handleDragEnd() {
+            marquee.addEventListener('pointerup', (e) => {
                 if (!isDragging) return;
                 isDragging = false;
                 marquee.classList.remove('dragging');
                 marquee.style.transform = '';
-            }
+                marquee.releasePointerCapture(e.pointerId);
+            });
 
-            marquee.addEventListener('mousedown', handleDragStart);
-            marquee.addEventListener('touchstart', handleDragStart, { passive: false });
-            window.addEventListener('mousemove', handleDragMove);
-            window.addEventListener('touchmove', handleDragMove, { passive: false });
-            window.addEventListener('mouseup', handleDragEnd);
-            window.addEventListener('touchend', handleDragEnd);
+            marquee.addEventListener('pointercancel', (e) => {
+                if (!isDragging) return;
+                isDragging = false;
+                marquee.classList.remove('dragging');
+                marquee.style.transform = '';
+            });
         })();
     </script>
 </body>
