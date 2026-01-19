@@ -788,52 +788,129 @@ ul {
 }
 
 /* ===================================
-   GLightbox Customization
+   Custom Project Lightbox
    =================================== */
-.glightbox-clean .gslide-description,
-.piroc-lightbox .gslide-description {
-    background: var(--color-bg-secondary);
+.project-lightbox {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
     padding: var(--spacing-md);
 }
 
-/* Navigation arrows */
-.glightbox-clean .gnext,
-.glightbox-clean .gprev,
-.piroc-lightbox .gnext,
-.piroc-lightbox .gprev {
-    background-color: rgba(0, 0, 0, 0.5);
+.project-lightbox.active {
+    display: flex;
+}
+
+.lightbox-close {
+    position: absolute;
+    top: var(--spacing-md);
+    right: var(--spacing-md);
+    background: none;
+    border: none;
+    color: var(--color-white);
+    font-size: 2.5rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0.5rem;
+    transition: var(--transition);
+    z-index: 10;
+}
+
+.lightbox-close:hover {
+    color: var(--color-primary);
+}
+
+.lightbox-content {
+    max-width: 900px;
+    width: 100%;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+}
+
+/* Slideshow area */
+.lightbox-slideshow {
+    position: relative;
+    aspect-ratio: 16/10;
+    background: var(--color-black);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.slide-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.slide-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    filter: none;
+}
+
+.slide-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.6);
     border: 1px solid var(--color-primary);
+    color: var(--color-white);
+    font-size: 2rem;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.glightbox-clean .gnext:hover,
-.glightbox-clean .gprev:hover,
-.piroc-lightbox .gnext:hover,
-.piroc-lightbox .gprev:hover {
-    background-color: var(--color-primary);
+.slide-arrow:hover {
+    background: var(--color-primary);
+    color: var(--color-black);
 }
 
-.glightbox-clean .gnext svg,
-.glightbox-clean .gprev svg,
-.piroc-lightbox .gnext svg,
-.piroc-lightbox .gprev svg {
-    fill: var(--color-white);
+.slide-prev {
+    left: var(--spacing-sm);
 }
 
-.glightbox-clean .gslide-title,
-.piroc-lightbox .gslide-title {
+.slide-next {
+    right: var(--spacing-sm);
+}
+
+/* Info area */
+.lightbox-info {
+    padding: var(--spacing-md);
+    overflow-y: auto;
+    max-height: 40vh;
+}
+
+.slide-caption {
     font-family: var(--font-mono);
     font-size: 0.79rem;
     font-weight: 400;
     color: #777777;
     text-align: center;
     margin-bottom: var(--spacing-sm);
+    min-height: 1.2em;
 }
 
-.project-popup-content {
-    padding-top: var(--spacing-sm);
-}
-
-.project-popup-title {
+.project-title {
     font-family: var(--font-head);
     font-size: 1.5rem;
     font-weight: 700;
@@ -842,14 +919,14 @@ ul {
     margin-bottom: var(--spacing-sm);
 }
 
-.project-popup-description {
+.project-description {
     color: var(--color-text);
     font-size: 0.875rem;
     line-height: 1.6;
     margin-bottom: var(--spacing-md);
 }
 
-.project-popup-link {
+.project-link {
     display: inline-block;
     font-family: var(--font-mono);
     font-size: 0.75rem;
@@ -862,12 +939,12 @@ ul {
     margin-bottom: var(--spacing-md);
 }
 
-.project-popup-link:hover {
+.project-link:hover {
     background: var(--color-primary);
     color: var(--color-black);
 }
 
-.project-popup-nav {
+.project-nav {
     display: flex;
     gap: var(--spacing-sm);
     padding-top: var(--spacing-sm);
@@ -947,8 +1024,22 @@ ul {
         align-items: center;
     }
 
-    .project-popup-nav {
+    .project-nav {
         flex-direction: column;
+    }
+
+    .lightbox-content {
+        max-height: 95vh;
+    }
+
+    .lightbox-slideshow {
+        aspect-ratio: 4/3;
+    }
+
+    .slide-arrow {
+        width: 40px;
+        height: 40px;
+        font-size: 1.5rem;
     }
 }
 

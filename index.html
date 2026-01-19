@@ -9,7 +9,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css">
 </head>
 <body>
     <!-- Hero Section -->
@@ -228,7 +227,30 @@
         </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
+    <!-- Custom Project Lightbox -->
+    <div class="project-lightbox" id="project-lightbox">
+        <button class="lightbox-close" aria-label="Close">&times;</button>
+        <div class="lightbox-content">
+            <div class="lightbox-slideshow">
+                <button class="slide-arrow slide-prev" aria-label="Previous image">&#8249;</button>
+                <div class="slide-container">
+                    <img class="slide-image" src="" alt="">
+                </div>
+                <button class="slide-arrow slide-next" aria-label="Next image">&#8250;</button>
+            </div>
+            <div class="lightbox-info">
+                <p class="slide-caption"></p>
+                <h3 class="project-title"></h3>
+                <p class="project-description"></p>
+                <a class="project-link" href="" target="_blank" rel="noopener">Visit Project</a>
+                <div class="project-nav">
+                    <button class="project-nav-btn project-prev">Previous Project</button>
+                    <button class="project-nav-btn project-next">Next Project</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -327,7 +349,20 @@
         // Store projects globally for lightbox navigation
         let allProjects = [];
         let currentProjectIndex = 0;
-        let lightbox = null;
+        let currentSlideIndex = 0;
+
+        // Lightbox elements
+        const lightboxEl = document.getElementById('project-lightbox');
+        const slideImage = lightboxEl.querySelector('.slide-image');
+        const slideCaption = lightboxEl.querySelector('.slide-caption');
+        const projectTitle = lightboxEl.querySelector('.project-title');
+        const projectDescription = lightboxEl.querySelector('.project-description');
+        const projectLink = lightboxEl.querySelector('.project-link');
+        const prevSlideBtn = lightboxEl.querySelector('.slide-prev');
+        const nextSlideBtn = lightboxEl.querySelector('.slide-next');
+        const prevProjectBtn = lightboxEl.querySelector('.project-prev');
+        const nextProjectBtn = lightboxEl.querySelector('.project-next');
+        const closeBtn = lightboxEl.querySelector('.lightbox-close');
 
         // Fetch projects from Sanity
         async function fetchProjects() {
@@ -391,80 +426,94 @@
         // Open project in lightbox
         function openProjectLightbox(index) {
             currentProjectIndex = index;
+            currentSlideIndex = 0;
             const project = allProjects[index];
 
             if (!project || !project.gallery || project.gallery.length === 0) return;
 
-            console.log('Gallery images:', project.gallery.length, project.gallery);
-
-            // Build lightbox elements for this project's gallery
-            const elements = project.gallery.map((item, i) => ({
-                href: item.url,
-                type: 'image',
-                title: item.caption || '',
-                description: i === 0 ? buildProjectDescription(project) : ''
-            }));
-
-            // Destroy existing lightbox if any
-            if (lightbox) {
-                lightbox.destroy();
-            }
-
-            // Create new lightbox
-            lightbox = GLightbox({
-                elements: elements,
-                touchNavigation: true,
-                loop: true,
-                autoplayVideos: false,
-                descPosition: 'bottom',
-                moreLength: 0,
-                skin: 'piroc-lightbox',
-                slideEffect: 'slide',
-                closeOnOutsideClick: true
-            });
-
-            lightbox.open();
-        }
-
-        // Build project description HTML for lightbox
-        function buildProjectDescription(project) {
-            let html = `<div class="project-popup-content">`;
-            html += `<h3 class="project-popup-title">${project.title}</h3>`;
-
-            if (project.description) {
-                html += `<p class="project-popup-description">${project.description}</p>`;
-            }
+            // Update project info
+            projectTitle.textContent = project.title;
+            projectDescription.textContent = project.description || '';
 
             if (project.link) {
-                html += `<a href="${project.link}" target="_blank" rel="noopener" class="project-popup-link">Visit Project</a>`;
+                projectLink.href = project.link;
+                projectLink.style.display = 'inline-block';
+            } else {
+                projectLink.style.display = 'none';
             }
 
-            // Add project navigation
-            html += `<div class="project-popup-nav">`;
-            if (currentProjectIndex > 0) {
-                html += `<button class="project-nav-btn project-nav-prev" onclick="navigateProject(-1)">Previous Project</button>`;
-            }
-            if (currentProjectIndex < allProjects.length - 1) {
-                html += `<button class="project-nav-btn project-nav-next" onclick="navigateProject(1)">Next Project</button>`;
-            }
-            html += `</div>`;
+            // Update project navigation visibility
+            prevProjectBtn.style.display = currentProjectIndex > 0 ? 'inline-block' : 'none';
+            nextProjectBtn.style.display = currentProjectIndex < allProjects.length - 1 ? 'inline-block' : 'none';
 
-            html += `</div>`;
-            return html;
+            // Show first slide
+            updateSlide();
+
+            // Show lightbox
+            lightboxEl.classList.add('active');
+            document.body.style.overflow = 'hidden';
         }
 
-        // Navigate between projects
+        // Update current slide
+        function updateSlide() {
+            const project = allProjects[currentProjectIndex];
+            const gallery = project.gallery;
+            const currentImage = gallery[currentSlideIndex];
+
+            slideImage.src = currentImage.url;
+            slideImage.alt = currentImage.caption || project.title;
+            slideCaption.textContent = currentImage.caption || '';
+
+            // Update slide navigation visibility
+            prevSlideBtn.style.visibility = currentSlideIndex > 0 ? 'visible' : 'hidden';
+            nextSlideBtn.style.visibility = currentSlideIndex < gallery.length - 1 ? 'visible' : 'hidden';
+        }
+
+        // Navigate slides
+        function navigateSlide(direction) {
+            const project = allProjects[currentProjectIndex];
+            const newIndex = currentSlideIndex + direction;
+
+            if (newIndex >= 0 && newIndex < project.gallery.length) {
+                currentSlideIndex = newIndex;
+                updateSlide();
+            }
+        }
+
+        // Navigate projects
         function navigateProject(direction) {
             const newIndex = currentProjectIndex + direction;
             if (newIndex >= 0 && newIndex < allProjects.length) {
-                if (lightbox) {
-                    lightbox.close();
-                }
-                setTimeout(() => {
-                    openProjectLightbox(newIndex);
-                }, 300);
+                openProjectLightbox(newIndex);
             }
         }
+
+        // Close lightbox
+        function closeLightbox() {
+            lightboxEl.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Event listeners for lightbox
+        closeBtn.addEventListener('click', closeLightbox);
+        prevSlideBtn.addEventListener('click', () => navigateSlide(-1));
+        nextSlideBtn.addEventListener('click', () => navigateSlide(1));
+        prevProjectBtn.addEventListener('click', () => navigateProject(-1));
+        nextProjectBtn.addEventListener('click', () => navigateProject(1));
+
+        // Close on background click
+        lightboxEl.addEventListener('click', (e) => {
+            if (e.target === lightboxEl) closeLightbox();
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (!lightboxEl.classList.contains('active')) return;
+
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowLeft') navigateSlide(-1);
+            if (e.key === 'ArrowRight') navigateSlide(1);
+        });
 
         // Initialize portfolio on page load
         document.addEventListener('DOMContentLoaded', async () => {
