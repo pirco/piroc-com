@@ -395,6 +395,8 @@
 
             if (!project || !project.gallery || project.gallery.length === 0) return;
 
+            console.log('Gallery images:', project.gallery.length, project.gallery);
+
             // Build lightbox elements for this project's gallery
             const elements = project.gallery.map((item, i) => ({
                 href: item.url,
@@ -412,11 +414,13 @@
             lightbox = GLightbox({
                 elements: elements,
                 touchNavigation: true,
-                loop: false,
+                loop: true,
                 autoplayVideos: false,
                 descPosition: 'bottom',
                 moreLength: 0,
-                skin: 'piroc-lightbox'
+                skin: 'piroc-lightbox',
+                slideEffect: 'slide',
+                closeOnOutsideClick: true
             });
 
             lightbox.open();

@@ -796,11 +796,36 @@ ul {
     padding: var(--spacing-md);
 }
 
+/* Navigation arrows */
+.glightbox-clean .gnext,
+.glightbox-clean .gprev,
+.piroc-lightbox .gnext,
+.piroc-lightbox .gprev {
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--color-primary);
+}
+
+.glightbox-clean .gnext:hover,
+.glightbox-clean .gprev:hover,
+.piroc-lightbox .gnext:hover,
+.piroc-lightbox .gprev:hover {
+    background-color: var(--color-primary);
+}
+
+.glightbox-clean .gnext svg,
+.glightbox-clean .gprev svg,
+.piroc-lightbox .gnext svg,
+.piroc-lightbox .gprev svg {
+    fill: var(--color-white);
+}
+
 .glightbox-clean .gslide-title,
 .piroc-lightbox .gslide-title {
     font-family: var(--font-mono);
-    font-size: 0.875rem;
-    color: var(--color-text-dim);
+    font-size: 0.79rem;
+    font-weight: 400;
+    color: #777777;
+    text-align: center;
     margin-bottom: var(--spacing-sm);
 }
 
