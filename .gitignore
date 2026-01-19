@@ -8,6 +8,11 @@ node_modules/
 # Netlify
 .netlify/
 
+# Sanity Studio build
+studio/dist/
+studio/node_modules/
+studio/.sanity/
+
 # OS files
 .DS_Store
 Thumbs.db
