@@ -2,13 +2,5 @@
   "name": "piroc-com",
   "version": "1.0.0",
   "description": "Piroc Media website",
-  "scripts": {
-    "db:init": "node scripts/init-db.js"
-  },
-  "dependencies": {
-    "@neondatabase/serverless": "^0.9.0"
-  },
-  "devDependencies": {
-    "dotenv": "^16.3.1"
-  }
+  "private": true
 }

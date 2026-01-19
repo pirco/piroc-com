@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-    <script src="https://www.google.com/recaptcha/api.js?render=6Ld1EwcpAAAAAEyOuQGMi2HTNazPrTuPf7GFO57I"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css">
 </head>
 <body>
     <!-- Hero Section -->
@@ -18,6 +18,7 @@
             <div class="nav-logo">PIROC</div>
             <ul class="nav-links">
                 <li><a href="#about">About</a></li>
+                <li><a href="#portfolio">Portfolio</a></li>
                 <li><a href="#work">Work</a></li>
                 <li><a href="#contact" class="nav-cta">Contact</a></li>
             </ul>
@@ -78,6 +79,19 @@
                 </div>
             </div>
         </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="portfolio">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Selected Work</span>
+                <h2>Portfolio</h2>
+            </div>
+            <div class="portfolio-grid" id="portfolio-grid">
+                <div class="portfolio-loading">Loading projects...</div>
+            </div>
+        </div>
+    </section>
 
     <!-- Services Section -->
     <section id="work" class="details">
@@ -144,7 +158,10 @@
                         </div>
                     </div>
                 </div>
-                <form class="register-form" action="#" method="POST">
+                <form class="register-form" name="contact" method="POST" data-netlify="true" data-netlify-recaptcha="true" netlify-honeypot="bot-field">
+                    <p class="hidden">
+                        <label>Don't fill this out if you're human: <input name="bot-field"></label>
+                    </p>
                     <div class="form-group">
                         <label for="name">Your Name</label>
                         <input type="text" id="name" name="name" required placeholder="Your name">
@@ -154,12 +171,11 @@
                         <input type="email" id="email" name="email" required placeholder="you@example.com">
                     </div>
                     <div class="form-group">
-                        <label for="role">Tell Us About Your Project</label>
-                        <textarea id="role" name="role" rows="3" placeholder="What are you building? What's your timeline? Any specific requirements?"></textarea>
+                        <label for="message">Tell Us About Your Project</label>
+                        <textarea id="message" name="message" rows="3" placeholder="What are you building? What's your timeline? Any specific requirements?"></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary btn-full">Send Message</button>
                     <p class="form-note">We'll get back to you within 24 hours.</p>
-                    <p class="form-note recaptcha-notice">This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Privacy Policy</a> and <a href="https://policies.google.com/terms" target="_blank" rel="noopener">Terms of Service</a> apply.</p>
                 </form>
             </div>
         </div>
@@ -177,6 +193,7 @@
                     <h4>Quick Links</h4>
                     <ul>
                         <li><a href="#about">About</a></li>
+                        <li><a href="#portfolio">Portfolio</a></li>
                         <li><a href="#work">Services</a></li>
                         <li><a href="#contact">Contact</a></li>
                     </ul>
@@ -210,6 +227,7 @@
         </div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
     <script>
         // Smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -244,66 +262,180 @@
             return nameRegex.test(name.trim());
         }
 
-        // Form submission handler
-        document.querySelector('.register-form').addEventListener('submit', async function(e) {
-            e.preventDefault();
-
+        // Client-side form validation (Netlify handles submission)
+        document.querySelector('.register-form').addEventListener('submit', function(e) {
             const name = this.querySelector('#name').value.trim();
             const email = this.querySelector('#email').value.trim();
-            const message = this.querySelector('#role').value.trim();
+            const message = this.querySelector('#message').value.trim();
 
-            // Client-side validation
             if (!isValidName(name)) {
+                e.preventDefault();
                 alert('Please enter a valid name (letters only, at least 2 characters)');
                 this.querySelector('#name').focus();
                 return;
             }
 
             if (!isValidEmail(email)) {
+                e.preventDefault();
                 alert('Please enter a valid email address');
                 this.querySelector('#email').focus();
                 return;
             }
 
             if (containsUrl(name) || containsUrl(message)) {
+                e.preventDefault();
                 alert('URLs are not allowed in the form');
                 return;
             }
+        });
 
-            const submitBtn = this.querySelector('button[type="submit"]');
-            const originalText = submitBtn.textContent;
-            submitBtn.textContent = 'Verifying...';
-            submitBtn.disabled = true;
+        // Sanity CMS Configuration
+        const SANITY_PROJECT_ID = 'plkkqx1d';
+        const SANITY_DATASET = 'production';
+        const SANITY_API_VERSION = '2024-01-01';
+
+        // Store projects globally for lightbox navigation
+        let allProjects = [];
+        let currentProjectIndex = 0;
+        let lightbox = null;
+
+        // Fetch projects from Sanity
+        async function fetchProjects() {
+            const query = encodeURIComponent(`*[_type == "project"] | order(order asc) {
+                _id,
+                title,
+                excerpt,
+                description,
+                link,
+                "gallery": gallery[]{ "url": image.asset->url, caption }
+            }`);
+
+            const url = `https://${SANITY_PROJECT_ID}.api.sanity.io/v${SANITY_API_VERSION}/data/query/${SANITY_DATASET}?query=${query}`;
 
             try {
-                // Generate reCAPTCHA token
-                const recaptchaToken = await grecaptcha.execute('6Ld1EwcpAAAAAEyOuQGMi2HTNazPrTuPf7GFO57I', { action: 'contact_form' });
-
-                submitBtn.textContent = 'Sending...';
-
-                const formData = { name, email, message, recaptchaToken };
-
-                const response = await fetch('/api/contact', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(formData)
-                });
-
-                const result = await response.json();
-
-                if (response.ok) {
-                    alert('Thanks for reaching out! We\'ll be in touch soon.');
-                    this.reset();
-                } else {
-                    alert(result.error || 'Something went wrong. Please try again.');
-                }
+                const response = await fetch(url);
+                const data = await response.json();
+                return data.result || [];
             } catch (error) {
-                console.error('Form submission error:', error);
-                alert('Network error. Please check your connection and try again.');
-            } finally {
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
+                console.error('Error fetching projects:', error);
+                return [];
             }
+        }
+
+        // Render portfolio grid
+        function renderPortfolioGrid(projects) {
+            const grid = document.getElementById('portfolio-grid');
+
+            if (!projects || projects.length === 0) {
+                grid.innerHTML = '<div class="portfolio-empty">No projects yet. Check back soon!</div>';
+                return;
+            }
+
+            allProjects = projects;
+
+            grid.innerHTML = projects.map((project, index) => {
+                const firstImage = project.gallery && project.gallery[0];
+                const imageUrl = firstImage ? firstImage.url + '?w=600&h=400&fit=crop' : '';
+
+                return `
+                    <div class="portfolio-card" data-index="${index}">
+                        ${imageUrl ? `<div class="portfolio-card-image"><img src="${imageUrl}" alt="${project.title}" loading="lazy"></div>` : ''}
+                        <div class="portfolio-card-content">
+                            <h3>${project.title}</h3>
+                            ${project.excerpt ? `<p>${project.excerpt}</p>` : ''}
+                            <span class="portfolio-card-link">View Details</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Add click handlers
+            grid.querySelectorAll('.portfolio-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const index = parseInt(card.dataset.index);
+                    openProjectLightbox(index);
+                });
+            });
+        }
+
+        // Open project in lightbox
+        function openProjectLightbox(index) {
+            currentProjectIndex = index;
+            const project = allProjects[index];
+
+            if (!project || !project.gallery || project.gallery.length === 0) return;
+
+            // Build lightbox elements for this project's gallery
+            const elements = project.gallery.map((item, i) => ({
+                href: item.url,
+                type: 'image',
+                title: item.caption || '',
+                description: i === 0 ? buildProjectDescription(project) : ''
+            }));
+
+            // Destroy existing lightbox if any
+            if (lightbox) {
+                lightbox.destroy();
+            }
+
+            // Create new lightbox
+            lightbox = GLightbox({
+                elements: elements,
+                touchNavigation: true,
+                loop: false,
+                autoplayVideos: false,
+                descPosition: 'bottom',
+                moreLength: 0,
+                skin: 'piroc-lightbox'
+            });
+
+            lightbox.open();
+        }
+
+        // Build project description HTML for lightbox
+        function buildProjectDescription(project) {
+            let html = `<div class="project-popup-content">`;
+            html += `<h3 class="project-popup-title">${project.title}</h3>`;
+
+            if (project.description) {
+                html += `<p class="project-popup-description">${project.description}</p>`;
+            }
+
+            if (project.link) {
+                html += `<a href="${project.link}" target="_blank" rel="noopener" class="project-popup-link">Visit Project</a>`;
+            }
+
+            // Add project navigation
+            html += `<div class="project-popup-nav">`;
+            if (currentProjectIndex > 0) {
+                html += `<button class="project-nav-btn project-nav-prev" onclick="navigateProject(-1)">Previous Project</button>`;
+            }
+            if (currentProjectIndex < allProjects.length - 1) {
+                html += `<button class="project-nav-btn project-nav-next" onclick="navigateProject(1)">Next Project</button>`;
+            }
+            html += `</div>`;
+
+            html += `</div>`;
+            return html;
+        }
+
+        // Navigate between projects
+        function navigateProject(direction) {
+            const newIndex = currentProjectIndex + direction;
+            if (newIndex >= 0 && newIndex < allProjects.length) {
+                if (lightbox) {
+                    lightbox.close();
+                }
+                setTimeout(() => {
+                    openProjectLightbox(newIndex);
+                }, 300);
+            }
+        }
+
+        // Initialize portfolio on page load
+        document.addEventListener('DOMContentLoaded', async () => {
+            const projects = await fetchProjects();
+            renderPortfolioGrid(projects);
         });
     </script>
 </body>

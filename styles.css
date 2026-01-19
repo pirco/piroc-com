@@ -692,6 +692,189 @@ ul {
 }
 
 /* ===================================
+   Portfolio Section
+   =================================== */
+.portfolio {
+    padding: var(--spacing-xl) 0;
+    background-color: var(--color-bg);
+}
+
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 1px;
+    background-color: var(--color-border);
+    border: 1px solid var(--color-border);
+}
+
+.portfolio-loading,
+.portfolio-empty {
+    grid-column: 1 / -1;
+    padding: var(--spacing-lg);
+    text-align: center;
+    color: var(--color-text-dim);
+    font-family: var(--font-mono);
+    background-color: var(--color-bg-secondary);
+}
+
+.portfolio-card {
+    background: var(--color-bg-secondary);
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+}
+
+.portfolio-card:hover {
+    background: var(--color-bg);
+}
+
+.portfolio-card-image {
+    aspect-ratio: 3/2;
+    overflow: hidden;
+}
+
+.portfolio-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%);
+    transition: var(--transition);
+}
+
+.portfolio-card:hover .portfolio-card-image img {
+    filter: grayscale(0%);
+}
+
+.portfolio-card-content {
+    padding: var(--spacing-md);
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.portfolio-card-content h3 {
+    font-family: var(--font-head);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-white);
+    text-transform: uppercase;
+    margin-bottom: var(--spacing-sm);
+}
+
+.portfolio-card-content p {
+    color: var(--color-text-dim);
+    font-size: 0.875rem;
+    line-height: 1.6;
+    flex-grow: 1;
+    margin-bottom: var(--spacing-sm);
+}
+
+.portfolio-card-link {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-primary);
+    border-bottom: 1px solid var(--color-primary);
+    display: inline-block;
+    padding-bottom: 2px;
+    transition: var(--transition);
+}
+
+.portfolio-card:hover .portfolio-card-link {
+    color: var(--color-white);
+    border-color: var(--color-white);
+}
+
+/* ===================================
+   GLightbox Customization
+   =================================== */
+.glightbox-clean .gslide-description,
+.piroc-lightbox .gslide-description {
+    background: var(--color-bg-secondary);
+    padding: var(--spacing-md);
+}
+
+.glightbox-clean .gslide-title,
+.piroc-lightbox .gslide-title {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    color: var(--color-text-dim);
+    margin-bottom: var(--spacing-sm);
+}
+
+.project-popup-content {
+    padding-top: var(--spacing-sm);
+}
+
+.project-popup-title {
+    font-family: var(--font-head);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-white);
+    text-transform: uppercase;
+    margin-bottom: var(--spacing-sm);
+}
+
+.project-popup-description {
+    color: var(--color-text);
+    font-size: 0.875rem;
+    line-height: 1.6;
+    margin-bottom: var(--spacing-md);
+}
+
+.project-popup-link {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-primary);
+    border: 1px solid var(--color-primary);
+    padding: 0.5rem 1rem;
+    transition: var(--transition);
+    margin-bottom: var(--spacing-md);
+}
+
+.project-popup-link:hover {
+    background: var(--color-primary);
+    color: var(--color-black);
+}
+
+.project-popup-nav {
+    display: flex;
+    gap: var(--spacing-sm);
+    padding-top: var(--spacing-sm);
+    border-top: 1px solid var(--color-border);
+}
+
+.project-nav-btn {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-dim);
+    background: none;
+    border: 1px solid var(--color-border);
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.project-nav-btn:hover {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+/* ===================================
+   Honeypot (hidden from humans)
+   =================================== */
+.hidden {
+    display: none !important;
+}
+
+/* ===================================
    Responsive Design
    =================================== */
 @media (max-width: 1024px) {
@@ -723,7 +906,8 @@ ul {
         grid-row: span 1;
     }
 
-    .about-grid {
+    .about-grid,
+    .portfolio-grid {
         grid-template-columns: 1fr;
     }
 
@@ -736,6 +920,10 @@ ul {
         display: flex;
         flex-direction: column;
         align-items: center;
+    }
+
+    .project-popup-nav {
+        flex-direction: column;
     }
 }
 
