@@ -360,6 +360,7 @@ ul {
    Gallery Section
    =================================== */
 .gallery {
+    display: none; /* Hidden for now */
     padding: 0;
 }
 
@@ -755,7 +756,7 @@ ul {
 
 .portfolio-card-content h3 {
     font-family: var(--font-head);
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     font-weight: 700;
     color: var(--color-white);
     text-transform: uppercase;
