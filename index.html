@@ -262,30 +262,58 @@
             return nameRegex.test(name.trim());
         }
 
-        // Client-side form validation (Netlify handles submission)
-        document.querySelector('.register-form').addEventListener('submit', function(e) {
-            const name = this.querySelector('#name').value.trim();
-            const email = this.querySelector('#email').value.trim();
-            const message = this.querySelector('#message').value.trim();
+        // Form submission handler with validation
+        document.querySelector('.register-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
 
+            const form = this;
+            const name = form.querySelector('#name').value.trim();
+            const email = form.querySelector('#email').value.trim();
+            const message = form.querySelector('#message').value.trim();
+
+            // Client-side validation
             if (!isValidName(name)) {
-                e.preventDefault();
                 alert('Please enter a valid name (letters only, at least 2 characters)');
-                this.querySelector('#name').focus();
+                form.querySelector('#name').focus();
                 return;
             }
 
             if (!isValidEmail(email)) {
-                e.preventDefault();
                 alert('Please enter a valid email address');
-                this.querySelector('#email').focus();
+                form.querySelector('#email').focus();
                 return;
             }
 
             if (containsUrl(name) || containsUrl(message)) {
-                e.preventDefault();
                 alert('URLs are not allowed in the form');
                 return;
+            }
+
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+
+            try {
+                const formData = new FormData(form);
+                const response = await fetch('/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams(formData).toString()
+                });
+
+                if (response.ok) {
+                    alert('Thanks for reaching out! We\'ll be in touch soon.');
+                    form.reset();
+                } else {
+                    alert('Something went wrong. Please try again.');
+                }
+            } catch (error) {
+                console.error('Form submission error:', error);
+                alert('Network error. Please check your connection and try again.');
+            } finally {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
             }
         });
 
