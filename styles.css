@@ -196,7 +196,41 @@ ul {
     align-items: center;
     padding: var(--spacing-xl) var(--spacing-md);
     overflow: hidden;
-    background: url('images/hero.png') no-repeat center center/cover;
+    background: var(--color-black);
+}
+
+/* Perspective Grid Background */
+.hero-grid-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+        linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.8) 100%),
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 80px,
+            rgba(212, 175, 55, 0.1) 80px,
+            rgba(212, 175, 55, 0.1) 81px
+        ),
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 80px,
+            rgba(212, 175, 55, 0.1) 80px,
+            rgba(212, 175, 55, 0.1) 81px
+        );
+    transform: perspective(500px) rotateX(60deg);
+    transform-origin: center top;
+    z-index: 0;
+    animation: gridPulse 4s ease-in-out infinite;
+}
+
+@keyframes gridPulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
 }
 
 .hero::before {
@@ -206,7 +240,7 @@ ul {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.6);
+    background: radial-gradient(ellipse at center bottom, rgba(212, 175, 55, 0.05) 0%, transparent 70%);
     z-index: 0;
 }
 
@@ -220,7 +254,7 @@ ul {
     bottom: 0;
     right: 0;
     background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-    z-index: 2;
+    z-index: 5;
     background-size: 100% 2px, 3px 100%;
     pointer-events: none;
 }
@@ -230,6 +264,9 @@ ul {
     text-align: center;
     z-index: 3;
     max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .hero-date {
@@ -242,7 +279,7 @@ ul {
     border: 1px solid var(--color-primary);
     display: inline-block;
     padding: 0.5rem 1rem;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0,0,0,0.8);
 }
 
 .hero-title {
@@ -254,16 +291,101 @@ ul {
     letter-spacing: -0.04em;
     margin-bottom: var(--spacing-md);
     text-transform: uppercase;
-    text-shadow: 0 0 20px rgba(255,255,255,0.1);
+    text-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
+    overflow: visible;
+}
+
+.title-word {
+    display: inline-block;
+    animation: dropIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    animation-delay: var(--word-delay);
+    opacity: 0;
+    transform: scale(8);
+    transform-origin: center center;
+}
+
+@keyframes dropIn {
+    0% {
+        opacity: 0;
+        transform: scale(8);
+        text-shadow: 0 0 100px rgba(255, 255, 255, 0.5);
+    }
+    40% {
+        opacity: 1;
+        text-shadow: 0 0 60px rgba(212, 175, 55, 0.4);
+    }
+    70% {
+        transform: scale(1);
+    }
+    80% {
+        transform: scale(0.95);
+    }
+    90% {
+        transform: scale(1.03);
+    }
+    95% {
+        transform: scale(0.99);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+        text-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
+    }
+}
+
+/* Reduced motion: no drop animation */
+@media (prefers-reduced-motion: reduce) {
+    .title-word {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
 }
 
 .hero-tagline {
     font-size: 1.25rem;
     color: var(--color-text);
     margin: 0 auto var(--spacing-lg);
-    background: var(--color-black);
+    background: rgba(0,0,0,0.8);
     display: inline-block;
     padding: 0.2rem 0.5rem;
+}
+
+/* Floating Devices Container */
+.hero-devices {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* Base Device Styles (SVG) */
+.device {
+    position: absolute;
+    transform-style: preserve-3d;
+    top: 50%;
+    left: 50%;
+    opacity: 0;
+    filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.15));
+}
+
+/* Device sizes */
+.device-phone {
+    width: 120px;
+    height: 220px;
+}
+
+.device-tablet {
+    width: 200px;
+    height: 280px;
+}
+
+.device-monitor {
+    width: 280px;
+    height: 210px;
 }
 
 .hero-scroll {
@@ -280,12 +402,88 @@ ul {
     text-transform: uppercase;
     letter-spacing: 0.2em;
     z-index: 3;
+    transition: opacity 0.3s ease;
 }
 
 .scroll-line {
     width: 2px;
     height: 60px;
     background: var(--color-primary);
+}
+
+/* Hero Responsive */
+@media (max-width: 1024px) {
+    .device-monitor {
+        display: none;
+    }
+
+    .device-phone {
+        width: 100px;
+        height: 180px;
+    }
+
+    .device-tablet {
+        width: 160px;
+        height: 220px;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-devices {
+        display: none;
+    }
+
+    .hero-grid-overlay {
+        transform: perspective(300px) rotateX(70deg);
+        opacity: 0.4;
+    }
+}
+
+/* Accessibility: Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    .hero-grid-overlay {
+        animation: none;
+    }
+
+    /* Show devices at static positions when motion is reduced */
+    .device-phone {
+        transform: translate(120%, -120%) scale(0.7) rotateY(-15deg) rotateX(5deg) rotateZ(5deg) !important;
+        opacity: 0.8 !important;
+    }
+
+    .device-tablet {
+        transform: translate(-200%, -80%) scale(0.8) rotateY(20deg) rotateX(-5deg) rotateZ(-3deg) !important;
+        opacity: 0.8 !important;
+    }
+
+    .device-monitor {
+        transform: translate(100%, 60%) scale(0.9) rotateY(-10deg) rotateX(5deg) !important;
+        opacity: 0.8 !important;
+    }
+}
+
+/* Typewriter effect */
+.section-header h2,
+.details-info h2,
+.register-info h2 {
+    visibility: hidden;
+}
+
+.section-header h2.typewriter-ready,
+.details-info h2.typewriter-ready,
+.register-info h2.typewriter-ready {
+    visibility: visible;
+}
+
+.typewriter-cursor {
+    color: var(--color-primary);
+    animation: blink 0.7s infinite;
+    font-weight: 400;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
 }
 
 /* ===================================

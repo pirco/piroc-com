@@ -13,6 +13,7 @@
 <body>
     <!-- Hero Section -->
     <header class="hero">
+        <div class="hero-grid-overlay"></div>
         <nav class="nav">
             <div class="nav-logo">PIROC</div>
             <ul class="nav-links">
@@ -23,10 +24,146 @@
             </ul>
         </nav>
         <div class="hero-content">
-            <p class="hero-date">Est. 1997 — Los Angeles to Berlin</p>
-            <h1 class="hero-title">We Build<br>Websites</h1>
+            <p class="hero-date">Est. 1997</p>
+            <h1 class="hero-title">
+                <span class="title-word" style="--word-delay: 0s">We</span>
+                <span class="title-word" style="--word-delay: 0.6s">Build</span><br>
+                <span class="title-word" style="--word-delay: 1.2s">Websites</span>
+            </h1>
             <p class="hero-tagline">Award-winning design and development.<br>Three decades of digital craft.</p>
             <a href="#contact" class="btn btn-primary">Start a Project</a>
+        </div>
+        <div class="hero-devices">
+            <!-- Phone mockup -->
+            <svg class="device device-phone" viewBox="0 0 120 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Phone frame -->
+                <rect x="1" y="1" width="118" height="218" rx="12" fill="#0a0a0a" stroke="rgba(212,175,55,0.3)" stroke-width="1"/>
+                <!-- Screen area -->
+                <rect x="8" y="16" width="104" height="188" rx="4" fill="#111"/>
+                <!-- Header bar -->
+                <rect x="8" y="16" width="104" height="14" rx="4" fill="url(#goldGradient)"/>
+                <!-- Hero image placeholder -->
+                <rect x="12" y="34" width="96" height="50" rx="2" fill="rgba(255,255,255,0.9)"/>
+                <!-- Text lines -->
+                <rect x="12" y="90" width="70" height="6" rx="1" fill="rgba(212,175,55,0.3)"/>
+                <rect x="12" y="100" width="96" height="4" rx="1" fill="rgba(212,175,55,0.15)"/>
+                <rect x="12" y="108" width="80" height="4" rx="1" fill="rgba(212,175,55,0.15)"/>
+                <!-- Card -->
+                <rect x="12" y="120" width="96" height="40" rx="2" fill="rgba(212,175,55,0.08)" stroke="rgba(212,175,55,0.2)" stroke-width="0.5"/>
+                <rect x="16" y="124" width="30" height="32" rx="1" fill="rgba(255,255,255,0.8)"/>
+                <rect x="50" y="128" width="40" height="4" rx="1" fill="rgba(212,175,55,0.25)"/>
+                <rect x="50" y="136" width="54" height="3" rx="1" fill="rgba(212,175,55,0.15)"/>
+                <rect x="50" y="143" width="45" height="3" rx="1" fill="rgba(212,175,55,0.15)"/>
+                <!-- Bottom nav -->
+                <rect x="12" y="170" width="96" height="30" rx="2" fill="rgba(212,175,55,0.05)"/>
+                <circle cx="32" cy="185" r="8" fill="rgba(212,175,55,0.2)"/>
+                <circle cx="60" cy="185" r="8" fill="rgba(212,175,55,0.3)"/>
+                <circle cx="88" cy="185" r="8" fill="rgba(212,175,55,0.2)"/>
+                <defs>
+                    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#D4AF37"/>
+                        <stop offset="100%" stop-color="rgba(212,175,55,0.5)"/>
+                    </linearGradient>
+                </defs>
+            </svg>
+
+            <!-- Tablet mockup -->
+            <svg class="device device-tablet" viewBox="0 0 200 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Tablet frame -->
+                <rect x="1" y="1" width="198" height="278" rx="12" fill="#0a0a0a" stroke="rgba(212,175,55,0.3)" stroke-width="1"/>
+                <!-- Screen area -->
+                <rect x="8" y="12" width="184" height="256" rx="4" fill="#111"/>
+                <!-- Header bar -->
+                <rect x="8" y="12" width="184" height="18" rx="4" fill="url(#goldGradient2)"/>
+                <rect x="16" y="18" width="40" height="6" rx="1" fill="rgba(0,0,0,0.3)"/>
+                <!-- Two column layout -->
+                <!-- Left column -->
+                <rect x="12" y="36" width="86" height="60" rx="2" fill="rgba(255,255,255,0.9)"/>
+                <rect x="12" y="100" width="60" height="5" rx="1" fill="rgba(212,175,55,0.3)"/>
+                <rect x="12" y="109" width="86" height="3" rx="1" fill="rgba(212,175,55,0.15)"/>
+                <rect x="12" y="116" width="70" height="3" rx="1" fill="rgba(212,175,55,0.15)"/>
+                <!-- Right column -->
+                <rect x="102" y="36" width="86" height="60" rx="2" fill="rgba(255,255,255,0.85)"/>
+                <rect x="102" y="100" width="55" height="5" rx="1" fill="rgba(212,175,55,0.3)"/>
+                <rect x="102" y="109" width="86" height="3" rx="1" fill="rgba(212,175,55,0.15)"/>
+                <rect x="102" y="116" width="75" height="3" rx="1" fill="rgba(212,175,55,0.15)"/>
+                <!-- Feature cards row -->
+                <rect x="12" y="130" width="56" height="50" rx="2" fill="rgba(212,175,55,0.08)" stroke="rgba(212,175,55,0.2)" stroke-width="0.5"/>
+                <rect x="16" y="134" width="48" height="28" rx="1" fill="rgba(255,255,255,0.8)"/>
+                <rect x="16" y="166" width="35" height="3" rx="1" fill="rgba(212,175,55,0.2)"/>
+                <rect x="72" y="130" width="56" height="50" rx="2" fill="rgba(212,175,55,0.08)" stroke="rgba(212,175,55,0.2)" stroke-width="0.5"/>
+                <rect x="76" y="134" width="48" height="28" rx="1" fill="rgba(255,255,255,0.8)"/>
+                <rect x="76" y="166" width="40" height="3" rx="1" fill="rgba(212,175,55,0.2)"/>
+                <rect x="132" y="130" width="56" height="50" rx="2" fill="rgba(212,175,55,0.08)" stroke="rgba(212,175,55,0.2)" stroke-width="0.5"/>
+                <rect x="136" y="134" width="48" height="28" rx="1" fill="rgba(255,255,255,0.8)"/>
+                <rect x="136" y="166" width="32" height="3" rx="1" fill="rgba(212,175,55,0.2)"/>
+                <!-- Text block -->
+                <rect x="12" y="190" width="120" height="6" rx="1" fill="rgba(212,175,55,0.25)"/>
+                <rect x="12" y="200" width="176" height="3" rx="1" fill="rgba(212,175,55,0.12)"/>
+                <rect x="12" y="207" width="176" height="3" rx="1" fill="rgba(212,175,55,0.12)"/>
+                <rect x="12" y="214" width="140" height="3" rx="1" fill="rgba(212,175,55,0.12)"/>
+                <!-- CTA button -->
+                <rect x="12" y="228" width="70" height="20" rx="2" fill="rgba(212,175,55,0.4)"/>
+                <rect x="24" y="236" width="46" height="4" rx="1" fill="rgba(0,0,0,0.4)"/>
+                <defs>
+                    <linearGradient id="goldGradient2" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#D4AF37"/>
+                        <stop offset="100%" stop-color="rgba(212,175,55,0.5)"/>
+                    </linearGradient>
+                </defs>
+            </svg>
+
+            <!-- Monitor mockup -->
+            <svg class="device device-monitor" viewBox="0 0 280 210" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Monitor frame -->
+                <rect x="1" y="1" width="278" height="178" rx="8" fill="#0a0a0a" stroke="rgba(212,175,55,0.3)" stroke-width="1"/>
+                <!-- Screen area -->
+                <rect x="8" y="8" width="264" height="162" rx="4" fill="#111"/>
+                <!-- Header/nav bar -->
+                <rect x="8" y="8" width="264" height="16" rx="4" fill="url(#goldGradient3)"/>
+                <rect x="16" y="12" width="30" height="8" rx="1" fill="rgba(0,0,0,0.3)"/>
+                <rect x="200" y="13" width="20" height="6" rx="1" fill="rgba(0,0,0,0.2)"/>
+                <rect x="224" y="13" width="20" height="6" rx="1" fill="rgba(0,0,0,0.2)"/>
+                <rect x="248" y="13" width="16" height="6" rx="1" fill="rgba(0,0,0,0.2)"/>
+                <!-- Sidebar -->
+                <rect x="8" y="24" width="50" height="146" fill="rgba(212,175,55,0.05)"/>
+                <rect x="14" y="32" width="38" height="6" rx="1" fill="rgba(212,175,55,0.2)"/>
+                <rect x="14" y="44" width="32" height="4" rx="1" fill="rgba(212,175,55,0.12)"/>
+                <rect x="14" y="52" width="36" height="4" rx="1" fill="rgba(212,175,55,0.12)"/>
+                <rect x="14" y="60" width="28" height="4" rx="1" fill="rgba(212,175,55,0.12)"/>
+                <rect x="14" y="68" width="34" height="4" rx="1" fill="rgba(212,175,55,0.12)"/>
+                <rect x="14" y="84" width="38" height="6" rx="1" fill="rgba(212,175,55,0.2)"/>
+                <rect x="14" y="96" width="30" height="4" rx="1" fill="rgba(212,175,55,0.12)"/>
+                <rect x="14" y="104" width="36" height="4" rx="1" fill="rgba(212,175,55,0.12)"/>
+                <!-- Main content area -->
+                <!-- Hero section -->
+                <rect x="64" y="28" width="204" height="70" rx="2" fill="rgba(255,255,255,0.9)"/>
+                <!-- Three column cards -->
+                <rect x="64" y="102" width="64" height="50" rx="2" fill="rgba(212,175,55,0.08)" stroke="rgba(212,175,55,0.2)" stroke-width="0.5"/>
+                <rect x="68" y="106" width="56" height="30" rx="1" fill="rgba(255,255,255,0.85)"/>
+                <rect x="68" y="140" width="40" height="4" rx="1" fill="rgba(212,175,55,0.2)"/>
+                <rect x="68" y="147" width="52" height="2" rx="1" fill="rgba(212,175,55,0.1)"/>
+                <rect x="134" y="102" width="64" height="50" rx="2" fill="rgba(212,175,55,0.08)" stroke="rgba(212,175,55,0.2)" stroke-width="0.5"/>
+                <rect x="138" y="106" width="56" height="30" rx="1" fill="rgba(255,255,255,0.85)"/>
+                <rect x="138" y="140" width="45" height="4" rx="1" fill="rgba(212,175,55,0.2)"/>
+                <rect x="138" y="147" width="52" height="2" rx="1" fill="rgba(212,175,55,0.1)"/>
+                <rect x="204" y="102" width="64" height="50" rx="2" fill="rgba(212,175,55,0.08)" stroke="rgba(212,175,55,0.2)" stroke-width="0.5"/>
+                <rect x="208" y="106" width="56" height="30" rx="1" fill="rgba(255,255,255,0.85)"/>
+                <rect x="208" y="140" width="35" height="4" rx="1" fill="rgba(212,175,55,0.2)"/>
+                <rect x="208" y="147" width="52" height="2" rx="1" fill="rgba(212,175,55,0.1)"/>
+                <!-- Footer -->
+                <rect x="64" y="156" width="204" height="12" rx="1" fill="rgba(212,175,55,0.05)"/>
+                <rect x="70" y="160" width="30" height="4" rx="1" fill="rgba(212,175,55,0.15)"/>
+                <rect x="230" y="160" width="30" height="4" rx="1" fill="rgba(212,175,55,0.15)"/>
+                <!-- Stand -->
+                <path d="M110 179 L170 179 L180 208 L100 208 Z" fill="#0a0a0a" stroke="rgba(212,175,55,0.2)" stroke-width="1"/>
+                <defs>
+                    <linearGradient id="goldGradient3" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#D4AF37"/>
+                        <stop offset="100%" stop-color="rgba(212,175,55,0.5)"/>
+                    </linearGradient>
+                </defs>
+            </svg>
         </div>
         <div class="hero-scroll">
             <span>Scroll</span>
@@ -264,6 +401,184 @@
                     });
                 }
             });
+        });
+
+        // Fade out scroll indicator on scroll
+        const heroScroll = document.querySelector('.hero-scroll');
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 10) {
+                heroScroll.style.opacity = '0';
+            } else {
+                heroScroll.style.opacity = '1';
+            }
+        });
+
+        // Floating devices with randomized paths
+        (function() {
+            const devices = [
+                { el: document.querySelector('.device-phone'), duration: 11000, delay: 0 },
+                { el: document.querySelector('.device-tablet'), duration: 13000, delay: 2500 },
+                { el: document.querySelector('.device-monitor'), duration: 17000, delay: 5000 }
+            ];
+
+            // Check for reduced motion preference
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                return;
+            }
+
+            function randomBetween(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+
+            function getRandomEndPosition() {
+                // Random angle for direction (in radians)
+                const angle = randomBetween(0, Math.PI * 2);
+                // Random distance (how far to travel)
+                const distance = randomBetween(350, 500);
+
+                return {
+                    x: Math.cos(angle) * distance,
+                    y: Math.sin(angle) * distance,
+                    rotateY: randomBetween(-25, 25),
+                    rotateX: randomBetween(-10, 10),
+                    rotateZ: randomBetween(-8, 8),
+                    scale: randomBetween(1.3, 1.7)
+                };
+            }
+
+            function animateDevice(device) {
+                const end = getRandomEndPosition();
+
+                const keyframes = [
+                    {
+                        transform: 'translate(-50%, -50%) scale(0.1) rotateY(0deg) rotateX(0deg) rotateZ(0deg)',
+                        opacity: 0
+                    },
+                    {
+                        opacity: 0.4,
+                        offset: 0.1
+                    },
+                    {
+                        opacity: 1,
+                        offset: 0.5
+                    },
+                    {
+                        opacity: 0.4,
+                        offset: 0.9
+                    },
+                    {
+                        transform: `translate(${end.x}%, ${end.y}%) scale(${end.scale}) rotateY(${end.rotateY}deg) rotateX(${end.rotateX}deg) rotateZ(${end.rotateZ}deg)`,
+                        opacity: 0
+                    }
+                ];
+
+                const animation = device.el.animate(keyframes, {
+                    duration: device.duration,
+                    easing: 'ease-in-out',
+                    fill: 'forwards'
+                });
+
+                animation.onfinish = () => {
+                    // Small random variation in timing for next loop
+                    device.duration = device.duration + randomBetween(-500, 500);
+                    animateDevice(device);
+                };
+            }
+
+            // Start each device with its initial delay
+            devices.forEach(device => {
+                if (device.el) {
+                    setTimeout(() => animateDevice(device), device.delay);
+                }
+            });
+        })();
+
+        // Typewriter effect for section h2 headers (only on scroll down)
+        const typewriterHeaders = document.querySelectorAll('.section-header h2, .details-info h2, .register-info h2');
+        let lastScrollY = window.scrollY;
+        let scrollDirection = 'down';
+
+        window.addEventListener('scroll', function() {
+            scrollDirection = window.scrollY > lastScrollY ? 'down' : 'up';
+            lastScrollY = window.scrollY;
+        });
+
+        typewriterHeaders.forEach(header => {
+            // Store original HTML (preserves <br> tags)
+            header.dataset.originalHtml = header.innerHTML;
+            header.dataset.typing = 'false';
+            header.dataset.hasTyped = 'false';
+        });
+
+        function typewrite(element, html, index = 0) {
+            if (element.dataset.typing !== 'true') return;
+
+            // Parse HTML to handle <br> tags
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = html;
+            const textContent = tempDiv.textContent;
+
+            if (index <= textContent.length) {
+                // Rebuild HTML with partial text
+                let charCount = 0;
+                let result = '';
+                let i = 0;
+
+                while (i < html.length && charCount < index) {
+                    if (html.substr(i, 4) === '<br>') {
+                        result += '<br>';
+                        i += 4;
+                    } else if (html[i] === '<') {
+                        // Skip any other HTML tags
+                        const closeIndex = html.indexOf('>', i);
+                        result += html.substring(i, closeIndex + 1);
+                        i = closeIndex + 1;
+                    } else {
+                        result += html[i];
+                        charCount++;
+                        i++;
+                    }
+                }
+
+                element.innerHTML = result + '<span class="typewriter-cursor">|</span>';
+                setTimeout(() => typewrite(element, html, index + 1), 50);
+            } else {
+                // Done typing, remove cursor after a moment
+                setTimeout(() => {
+                    element.innerHTML = html;
+                }, 500);
+            }
+        }
+
+        const typewriterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const header = entry.target;
+
+                if (entry.isIntersecting) {
+                    header.classList.add('typewriter-ready');
+
+                    if (scrollDirection === 'down') {
+                        // Scrolling down: typewriter effect
+                        header.dataset.typing = 'true';
+                        header.innerHTML = '';
+                        typewrite(header, header.dataset.originalHtml);
+                    } else {
+                        // Scrolling up: just show text
+                        header.dataset.typing = 'false';
+                        header.innerHTML = header.dataset.originalHtml;
+                    }
+                } else {
+                    // Reset when out of view
+                    header.dataset.typing = 'false';
+                    header.classList.remove('typewriter-ready');
+                }
+            });
+        }, {
+            threshold: 0.5
+        });
+
+        typewriterHeaders.forEach(header => {
+            typewriterObserver.observe(header);
         });
 
         // Validation functions
